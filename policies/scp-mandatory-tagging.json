@@ -1,0 +1,77 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "DenyEC2WithoutMandatoryTags",
+      "Effect": "Deny",
+      "Action": [
+        "ec2:RunInstances"
+      ],
+      "Resource": [
+        "arn:aws:ec2:*:*:instance/*",
+        "arn:aws:ec2:*:*:volume/*"
+      ],
+      "Condition": {
+        "Null": {
+          "aws:RequestTag/business_unit": "true",
+          "aws:RequestTag/environment": "true",
+          "aws:RequestTag/team": "true",
+          "aws:RequestTag/cost_centre": "true",
+          "aws:RequestTag/product": "true"
+        }
+      }
+    },
+    {
+      "Sid": "DenyRDSWithoutMandatoryTags",
+      "Effect": "Deny",
+      "Action": [
+        "rds:CreateDBInstance",
+        "rds:CreateDBCluster"
+      ],
+      "Resource": "*",
+      "Condition": {
+        "Null": {
+          "aws:RequestTag/business_unit": "true",
+          "aws:RequestTag/environment": "true",
+          "aws:RequestTag/team": "true",
+          "aws:RequestTag/cost_centre": "true",
+          "aws:RequestTag/product": "true"
+        }
+      }
+    },
+    {
+      "Sid": "DenyS3WithoutMandatoryTags",
+      "Effect": "Deny",
+      "Action": [
+        "s3:CreateBucket"
+      ],
+      "Resource": "*",
+      "Condition": {
+        "Null": {
+          "aws:RequestTag/business_unit": "true",
+          "aws:RequestTag/environment": "true",
+          "aws:RequestTag/team": "true",
+          "aws:RequestTag/cost_centre": "true",
+          "aws:RequestTag/product": "true"
+        }
+      }
+    },
+    {
+      "Sid": "DenyEBSWithoutMandatoryTags",
+      "Effect": "Deny",
+      "Action": [
+        "ec2:CreateVolume"
+      ],
+      "Resource": "*",
+      "Condition": {
+        "Null": {
+          "aws:RequestTag/business_unit": "true",
+          "aws:RequestTag/environment": "true",
+          "aws:RequestTag/team": "true",
+          "aws:RequestTag/cost_centre": "true",
+          "aws:RequestTag/product": "true"
+        }
+      }
+    }
+  ]
+}
