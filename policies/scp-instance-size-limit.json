@@ -1,0 +1,58 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "DenyOversizedInstancesInNonProd",
+      "Effect": "Deny",
+      "Action": [
+        "ec2:RunInstances"
+      ],
+      "Resource": "arn:aws:ec2:*:*:instance/*",
+      "Condition": {
+        "StringLike": {
+          "ec2:InstanceType": [
+            "*.8xlarge",
+            "*.12xlarge",
+            "*.16xlarge",
+            "*.24xlarge",
+            "*.48xlarge",
+            "*.metal"
+          ]
+        },
+        "StringEquals": {
+          "aws:RequestTag/environment": [
+            "development",
+            "staging",
+            "sandbox"
+          ]
+        }
+      }
+    },
+    {
+      "Sid": "DenyInstancesLargerThan4xlargeInDev",
+      "Effect": "Deny",
+      "Action": [
+        "ec2:RunInstances"
+      ],
+      "Resource": "arn:aws:ec2:*:*:instance/*",
+      "Condition": {
+        "StringLike": {
+          "ec2:InstanceType": [
+            "*.4xlarge",
+            "*.8xlarge",
+            "*.12xlarge",
+            "*.16xlarge",
+            "*.24xlarge",
+            "*.48xlarge"
+          ]
+        },
+        "StringEquals": {
+          "aws:RequestTag/environment": "development"
+        },
+        "Null": {
+          "aws:RequestTag/approved_large_instance": "true"
+        }
+      }
+    }
+  ]
+}
