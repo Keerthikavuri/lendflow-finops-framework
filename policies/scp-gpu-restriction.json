@@ -1,0 +1,55 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "DenyGPUInstancesWithoutApproval",
+      "Effect": "Deny",
+      "Action": [
+        "ec2:RunInstances"
+      ],
+      "Resource": "arn:aws:ec2:*:*:instance/*",
+      "Condition": {
+        "StringLike": {
+          "ec2:InstanceType": [
+            "p2.*",
+            "p3.*",
+            "p4d.*",
+            "p4de.*",
+            "g3.*",
+            "g4dn.*",
+            "g4ad.*",
+            "g5.*",
+            "g5g.*"
+          ]
+        },
+        "Null": {
+          "aws:RequestTag/approved_gpu_workload": "true"
+        }
+      }
+    },
+    {
+      "Sid": "DenyGPUInstancesInNonMLAccounts",
+      "Effect": "Deny",
+      "Action": [
+        "ec2:RunInstances"
+      ],
+      "Resource": "arn:aws:ec2:*:*:instance/*",
+      "Condition": {
+        "StringLike": {
+          "ec2:InstanceType": [
+            "p2.*",
+            "p3.*",
+            "p4d.*",
+            "g4dn.*",
+            "g5.*"
+          ]
+        },
+        "StringNotEquals": {
+          "aws:PrincipalAccount": [
+            "111122223333"
+          ]
+        }
+      }
+    }
+  ]
+}
