@@ -1,0 +1,33 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "DenyResourceCreationOutsideApprovedRegions",
+      "Effect": "Deny",
+      "NotAction": [
+        "iam:*",
+        "organizations:*",
+        "route53:*",
+        "budgets:*",
+        "waf:*",
+        "cloudfront:*",
+        "sts:*",
+        "support:*",
+        "trustedadvisor:*",
+        "health:*",
+        "ce:*",
+        "cur:*"
+      ],
+      "Resource": "*",
+      "Condition": {
+        "StringNotIn": {
+          "aws:RequestedRegion": [
+            "ap-south-1",
+            "eu-west-1",
+            "us-east-1"
+          ]
+        }
+      }
+    }
+  ]
+}
